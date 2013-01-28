@@ -3,7 +3,7 @@ Sorin
 
 Sorin is a bunch of scripts bundled together that download tweets, parse them into a JSON dictionary, produce random tweets out of it following Markov chain conventions, and then tweet them.
 
-You can see it at work on @MarkovUnchained.
+You can see it at work on [@MarkovUnchained](http://twitter.com/MarkovUnchained).
 
 
 How it works
