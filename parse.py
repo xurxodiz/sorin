@@ -9,6 +9,7 @@ with open("archive/"+sys.argv[1]+"/log") as f:
 
   for tweet in f:
     words = tweet.split()
+    words.reverse()
     curr = "\n"
     for word in words:
       chain.setdefault(curr,[]).append(word)

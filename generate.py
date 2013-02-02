@@ -22,6 +22,7 @@ while (curr != False and numchars < 140):
 if curr:
 	sentence.pop()
 
+sentence.reverse()
 output = " ".join(sentence)
 
 print(output.encode("utf-8"))
