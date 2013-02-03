@@ -8,14 +8,16 @@ api = twitter.Api()
 
 lines = []
 subject = sys.argv[1]
-sinceid = int(sys.argv[2])
+maxid = None
 
-for i in range(1,5):
-	statuses = api.GetUserTimeline(id=subject, count=200, since_id=sinceid)
+for i in range(1,15):
+	statuses = api.GetUserTimeline(id=subject, count=200, max_id=maxid)
 	if statuses:
 		for s in statuses:
 			lines.append(s.text.encode("utf-8"))
-		sinceid = s.id
+		maxid = s.id-1
 
-print(sinceid)	
+lines.reverse()
+	
+print maxid
 print("\n".join(lines))

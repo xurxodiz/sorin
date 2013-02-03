@@ -2,8 +2,8 @@
 
 SUBJECT=$1
 
-ID=$(cat archive/$SUBJECT/id) 
-./fetch.py $SUBJECT $ID > archive/$SUBJECT/tmp
+mkdir -p archive/$SUBJECT/
+./init.py $SUBJECT > archive/$SUBJECT/tmp
 sed -i '' 's!\http\(s\)\{0,1\}://[^[:space:]]*!!g' archive/$SUBJECT/tmp
 head -n 1 archive/$SUBJECT/tmp > archive/$SUBJECT/id
 tail -n +2 archive/$SUBJECT/tmp >> archive/$SUBJECT/log
