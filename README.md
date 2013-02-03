@@ -23,6 +23,6 @@ Then, run `scripts/parse.py USERNAME` to create the dictionary.
 
 `scripts/generate.py USERNAME` will create the tweets and print them on screen.
 
-If you create a `SECRET` file with your Twitter consumer key, consumer secret, access key, and access token in different lines, inside of the `scripts` folder, you can run `scripts/tweet.py` TWEET to post them.
+If you create a `SECRET` file with your Twitter consumer key, consumer secret, access key, and access token in different lines, inside of the `scripts` folder, you can run `scripts/tweet.py TWEET` to post them.
 
 Use `script/generate.py USERNAME | scripts/tweet.py` to do both at the same time.
