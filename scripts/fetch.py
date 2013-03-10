@@ -17,5 +17,6 @@ for i in range(1,5):
 			lines.append(s.text.encode("utf-8"))
 		sinceid = s.id
 
-print(sinceid)	
+print(sinceid)
+lines.reverse()
 print("\n".join(lines))
