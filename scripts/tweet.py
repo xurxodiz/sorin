@@ -4,7 +4,7 @@
 import twitter
 import sys
 
-with open('SECRET', 'r') as f:
+with open('scripts/SECRET', 'r') as f:
 	[c_key, c_secret, a_key, a_secret] = f.readlines()
 
 # careful! strip the endline!

@@ -15,14 +15,12 @@ The tweets are split into words, then those words are stored according to what w
 How to use it
 =====
 
-Run `scripts/init.sh USERNAME` to create the folders and download the first batch of tweets from that user.
+Run `make init ACCOUNT=name_of_the_account` to create the folders and download the first batch of tweets from that user.
 
-(you should run `scripts/fetch.sh USERNAME` periodically afterwards to get the new tweets since last time)
+(you should run `make fetch ACCOUNT=name_of_the_account` periodically afterwards to get the new tweets since last time)
 
-Then, run `scripts/parse.py USERNAME` to create the dictionary (the first time you run the init script this will be done for you automatically).
+Then, run `make parse ACCOUNT=name_of_the_account` to create the dictionary (the first time you run the init script this will be done for you automatically).
 
-`scripts/generate.py USERNAME` will create the tweets and print them on screen.
+`make generate ACCOUNT=name_of_the_account` will create the tweets and print them on screen.
 
-If you create a `SECRET` file with your Twitter consumer key, consumer secret, access key, and access token in different lines, inside of the `scripts` folder, you can run `scripts/tweet.py TWEET` to post them.
-
-Use `script/generate.py USERNAME | scripts/tweet.py` to do both at the same time.
+If you create a `SECRET` file with your Twitter consumer key, consumer secret, access key, and access token in different lines, inside of the `scripts` folder, you can run `make tweet ACCOUNT=name_of_the_account` to both generate and automatically post them. You'll see them displayed on screen as well.
