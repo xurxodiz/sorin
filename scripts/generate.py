@@ -11,18 +11,31 @@ with open("archive/"+sys.argv[1]+"/json", 'r') as f:
 curr = "\n"
 numchars = -1 # offset the extra space counted in the first word
 sentence = []
-while (curr != False and numchars < 140):
-  word = random.choice(chain[curr])
-  if word: # only append if not false (i.e. not end of line)
-    numchars += 1 + len(word)
-    sentence.append(word)
-  curr = word
+banned = [[]]
+while True:
+  choices = [x for x in chain[curr] if x not in banned[-1]]
+  if [] == choices:
+    #if len(banned) > 1:
+    banned.pop() 
+    #if len(sentence) > 0:
+    previous = sentence.pop()
+    banned[-1].append(curr)
+    numchars = numchars - 1 - len(curr)
+    curr = previous
+    continue
+  word = random.choice(choices)
+  if not word:
+    break # end of sentence
+  else:
+    if (numchars + 1 + len(word)) >= 140:
+      banned[-1].append(word)
+      continue
+    else:
+      numchars += 1 + len(word)
+      sentence.append(word)
+      banned.append([])
+      curr = word
 
-# if we stopped because we exceeded size, we remove a word
-if curr:
-	sentence.pop()
-
-sentence.reverse()
 output = " ".join(sentence)
 
 print(output.encode("utf-8"))
