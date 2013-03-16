@@ -10,6 +10,7 @@ fetch:
 
 append:
 	@sed -i '' 's!\http\(s\)\{0,1\}://[^[:space:]]*!!g' archive/$(ACCOUNT)/tmp
+	@sed -E -i '' 's/^(RT )*(@[[:alpha:]_]+ )*//' archive/$(ACCOUNT)/tmp
 	@head -n 1 archive/$(ACCOUNT)/tmp > archive/$(ACCOUNT)/id
 	@tail -n +2 archive/$(ACCOUNT)/tmp >> archive/$(ACCOUNT)/log
 	@awk '!x[$$0]++' <archive/$(ACCOUNT)/log >archive/$(ACCOUNT)/tmp
