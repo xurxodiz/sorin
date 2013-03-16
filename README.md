@@ -12,8 +12,7 @@ How it works
 The tweets are split into words, then those words are stored according to what words follow what words. Then, a word is picked at random, and among all the possible words that have been found to follow it, one is picked at random according to is frequency. Repeat until the word picked can end a sentence. If you exceed tweet size, the last word will be discarded and a new one will be chosen. If there are no possible ways forward, yet another word is dropped and paths are searched from there.
 
 
-Tweet posprocessing
-=====
+### Tweet postprocessing
 
 All URLs are removed from tweets, as well as initial "RT" prefixes. Mentions in the middle of the text are fine, but they are removed if at the beggining of the tweet. This is done so texts tweeted by the algorithm are never output as direct replies, and can be viewed by everybody.
 
