@@ -1,5 +1,5 @@
 init:
-	@makemkdir -p archive/$(ACCOUNT)/
+	@mkdir -p archive/$(ACCOUNT)/
 	@scripts/init.py $(ACCOUNT) > archive/$(ACCOUNT)/tmp
 	@make append ACCOUNT=$(ACCOUNT)
 
