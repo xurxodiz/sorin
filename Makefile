@@ -16,7 +16,7 @@ append:
 	@awk '!x[$$0]++' <archive/$(ACCOUNT)/log >archive/$(ACCOUNT)/tmp
 	@sed '/^$$/d' <archive/$(ACCOUNT)/tmp >archive/$(ACCOUNT)/log
 	@rm archive/$(ACCOUNT)/tmp
-	@scripts/parse.py $(ACCOUNT)
+	@make parse ACCOUNT=$(ACCOUNT)
 
 generate:
 	@scripts/generate.py $(ACCOUNT)
@@ -25,4 +25,4 @@ parse:
 	@scripts/parse.py $(ACCOUNT)
 
 tweet:
-	@make generate ACCOUNT=$(ACCOUNT) | scripts/tweet.py
+	@scripts/tweet.py "`make generate ACCOUNT=$(ACCOUNT)`"
