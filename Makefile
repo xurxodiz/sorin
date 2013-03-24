@@ -1,3 +1,7 @@
+default:
+	@$(MAKE) -s build
+	@$(MAKE) -s run
+
 init:
 	@mkdir -p archive/$(ACCOUNT)/
 	@scripts/init.py $(ACCOUNT) > archive/$(ACCOUNT)/tmp
@@ -25,4 +29,4 @@ parse:
 	@scripts/parse.py $(ACCOUNT)
 
 tweet:
-	@scripts/tweet.py "`make generate ACCOUNT=$(ACCOUNT)`"
+	@make generate ACCOUNT=$(ACCOUNT) --no-print-directory | scripts/tweet.py
