@@ -4,7 +4,13 @@
 import twitter
 import sys
 
-api = twitter.Api()
+with open('scripts/SECRET', 'r') as f:
+  [c_key, c_secret, a_key, a_secret] = f.readlines()
+
+api = twitter.Api(consumer_key=c_key.strip(),
+                      consumer_secret=c_secret.strip(),
+                      access_token_key=a_key.strip(),
+                      access_token_secret=a_secret.strip())
 
 lines = []
 subject = sys.argv[1]

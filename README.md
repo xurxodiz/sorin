@@ -20,12 +20,12 @@ All URLs are removed from tweets, as well as initial "RT" prefixes. Mentions in 
 How to use it
 =====
 
-Run `make init ACCOUNT=name_of_the_account` to create the folders and download the first batch of tweets from that user.
+You must create a `SECRET` file with your Twitter consumer key, consumer secret, access key, and access token in different lines, inside of the `scripts` folder.
+
+Run `make init ACCOUNT=name_of_the_account` to create the folders and download the first batch of tweets from a user.
 
 (you should run `make fetch ACCOUNT=name_of_the_account` periodically afterwards to get the new tweets since last time)
 
-Then, run `make parse ACCOUNT=name_of_the_account` to create the dictionary (the first time you run the init script this will be done for you automatically).
-
 `make generate ACCOUNT=name_of_the_account` will create the tweets and print them on screen.
 
-If you create a `SECRET` file with your Twitter consumer key, consumer secret, access key, and access token in different lines, inside of the `scripts` folder, you can run `make tweet ACCOUNT=name_of_the_account` to both generate and automatically post them. You'll see them displayed on screen as well.
+You can run `make tweet ACCOUNT=name_of_the_account` to both generate and automatically post tweets. You'll see them displayed on screen as well.
