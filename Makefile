@@ -12,6 +12,9 @@ fetch:
 	@scripts/fetch.py $(ACCOUNT) $(ID) >archive/$(ACCOUNT)/tmp
 	@make append ACCOUNT=$(ACCOUNT)
 
+update:
+	@$(foreach ACC,$(patsubst archive/%,%,$(wildcard archive/*)),make fetch ACCOUNT=$(ACC);)
+
 append:
 	@sed -i '' 's!\http\(s\)\{0,1\}://[^[:space:]]*!!g' archive/$(ACCOUNT)/tmp
 	@sed -E -i '' 's/^(RT )*(@[[:alnum:]_]+:? )*//' archive/$(ACCOUNT)/tmp
