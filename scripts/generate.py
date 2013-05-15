@@ -8,7 +8,7 @@ import json
 with open("archive/"+sys.argv[1]+"/json", 'r') as f:
   chain = json.load(f)
 
-with open("archive/"+sys.argv[1]+"/json", 'r') as f:
+with open("archive/"+sys.argv[1]+"/log", 'r') as f:
   tweets = [l.split() for l in f.readlines()]
 
 output = tweets[0] # hack to guarantee a first iteration
