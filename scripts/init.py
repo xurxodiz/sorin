@@ -17,7 +17,7 @@ subject = sys.argv[1]
 maxid = None
 
 for i in range(1,15):
-	statuses = api.GetUserTimeline(user_id=subject, count=200, max_id=maxid)
+	statuses = api.GetUserTimeline(screen_name=subject, count=200, max_id=maxid)
 	if statuses:
 		for s in statuses:
 			lines.append(s.text.encode("utf-8"))

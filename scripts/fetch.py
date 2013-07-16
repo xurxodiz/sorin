@@ -17,7 +17,7 @@ subject = sys.argv[1]
 sinceid = int(sys.argv[2])
 
 for i in range(1,5):
-	statuses = api.GetUserTimeline(user_id=subject, count=200, since_id=sinceid)
+	statuses = api.GetUserTimeline(screen_name=subject, count=200, since_id=sinceid)
 	if statuses:
 		for s in statuses:
 			lines.append(s.text.encode("utf-8"))
