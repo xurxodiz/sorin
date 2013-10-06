@@ -4,6 +4,7 @@
 import sys
 import random
 import json
+import HTMLParser
 
 with open("archive/"+sys.argv[1]+"/json", 'r') as f:
   chain = json.load(f)
@@ -43,4 +44,5 @@ while output in tweets:
         curr = word
   output = " ".join(sentence)
 
-print(output.encode("utf-8"))
+h = HTMLParser.HTMLParser()
+print(h.unescape(output.encode("utf-8")))
