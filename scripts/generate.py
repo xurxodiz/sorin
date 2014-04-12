@@ -22,10 +22,10 @@ while output in tweets:
   while True:
     choices = [x for x in chain[curr] if x not in banned[-1]]
     if [] == choices:
-      #if len(banned) > 1:
-      banned.pop() 
-      #if len(sentence) > 0:
-      previous = sentence.pop()
+      if len(banned) > 1:
+        banned.pop() 
+      if len(sentence) > 0:
+        previous = sentence.pop()
       banned[-1].append(curr)
       numchars = numchars - 1 - len(curr)
       curr = previous
