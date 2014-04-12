@@ -14,7 +14,7 @@ The tweets are split into words, then those words are stored according to what w
 
 ### Tweet postprocessing
 
-All URLs are removed from tweets, as well as initial "RT" prefixes. Mentions in the middle of the text are fine, but they are removed if at the beggining of the tweet. This is done so texts tweeted by the algorithm are never output as direct replies, and can be viewed by everybody.
+All URLs are removed from tweets, as well as initial "RT" prefixes. Mentions in the middle of the text are fine, but they are removed if at the beggining of the tweet. This (done already in subtask `make depure`) is so texts tweeted by the algorithm are never output as direct replies, and can be viewed by everybody.
 
 Also, brackets and quotation marks of all kinds are removed, as well as opening ¿ and ¡ signs.
 
