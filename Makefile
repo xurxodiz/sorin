@@ -4,6 +4,12 @@ init:
 	@make depure ACCOUNT=$(ACCOUNT)
 	@make parse ACCOUNT=$(ACCOUNT)
 
+init-lyrics:
+	@mkdir -p archive/$(ACCOUNT)/
+	@cat lyrics/$(ACCOUNT)/*.txt > archive/$(ACCOUNT)/tmp
+	@make depure ACCOUNT=$(ACCOUNT)
+	@make parse ACCOUNT=$(ACCOUNT)
+
 fetch:
 	@$(eval ID:=$(shell cat archive/$(ACCOUNT)/id))
 	@scripts/fetch.py $(ACCOUNT) $(ID) >archive/$(ACCOUNT)/tmp2

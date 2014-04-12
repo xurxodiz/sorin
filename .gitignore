@@ -1,3 +1,4 @@
 SECRET
 *.pyc
 archive/*
+lyrics/*
