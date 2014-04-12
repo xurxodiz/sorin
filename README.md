@@ -16,15 +16,19 @@ The tweets are split into words, then those words are stored according to what w
 
 All URLs are removed from tweets, as well as initial "RT" prefixes. Mentions in the middle of the text are fine, but they are removed if at the beggining of the tweet. This is done so texts tweeted by the algorithm are never output as direct replies, and can be viewed by everybody.
 
+Also, brackets and quotation marks of all kinds are removed, as well as opening ¿ and ¡ signs.
+
 
 How to use it
 =====
+
+You'll need Python2 and the [python-twitter](https://github.com/bear/python-twitter) library – the reason why some parts are still stuck at it – but also Python3 (unicode string handling is much smoother with it). `init`, `fetch` and `tweet` scripts use Python2, while `parse` and `generate` use Python3.
 
 You must create a `SECRET` file with your Twitter consumer key, consumer secret, access key, and access token in different lines, inside of the `scripts` folder.
 
 Run `make init ACCOUNT=name_of_the_account` to create the folders and download the first batch of tweets from a user.
 
-(you should run `make fetch ACCOUNT=name_of_the_account` periodically afterwards to get the new tweets since last time)
+(you should run `make fetch ACCOUNT=name_of_the_account` periodically afterwards to get the new tweets since last time, or `make update` to update them all)
 
 `make generate ACCOUNT=name_of_the_account` will create the tweets and print them on screen.
 

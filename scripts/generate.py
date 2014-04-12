@@ -1,10 +1,10 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import sys
 import random
 import json
-import HTMLParser
+import xml.sax.saxutils
 
 with open("archive/"+sys.argv[1]+"/json", 'r') as f:
   chain = json.load(f)
@@ -44,5 +44,4 @@ while output in tweets:
         curr = word
   output = " ".join(sentence)
 
-h = HTMLParser.HTMLParser()
-print(h.unescape(output.encode("utf-8")))
+print(xml.sax.saxutils.unescape(output))

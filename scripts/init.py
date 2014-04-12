@@ -25,5 +25,5 @@ for i in range(1,15):
 
 lines.reverse()
 	
-print maxid
+print(maxid)
 print("\n".join(lines))
