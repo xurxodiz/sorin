@@ -10,11 +10,7 @@ with open("archive/"+sys.argv[1]+"/log") as f:
   for tweet in f:
     words = tweet.strip().split()
     curr = u"\n"
-    for w in words:
-      # we leave ! and ? since they make sense isolated
-      word = w.translate(str.maketrans('', '', '"()[]{}«»¡¿'))
-      if not word:
-        continue
+    for word in words:
       chain.setdefault(curr,[]).append(word)
       curr = word
     chain.setdefault(curr,[]).append(False)

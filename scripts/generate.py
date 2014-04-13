@@ -44,4 +44,8 @@ while output in tweets:
         curr = word
   output = " ".join(sentence)
 
+# we leave ! and ? since they make sense isolated
+output = [w.translate(str.maketrans('', '', '"()[]{}«»¡¿')) for w in output.split()]
+output = " ".join(output)
+
 print(xml.sax.saxutils.unescape(output))
