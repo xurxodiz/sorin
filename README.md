@@ -19,17 +19,30 @@ All URLs are removed from tweets, as well as initial "RT" prefixes. Mentions in 
 Also, brackets and quotation marks of all kinds are removed, as well as opening ¿ and ¡ signs.
 
 
-How to use it
+Setup
 =====
 
 You'll need Python2 and the [python-twitter](https://github.com/bear/python-twitter) library – the reason why some parts are still stuck at it – but also Python3 (unicode string handling is much smoother with it). `init`, `fetch` and `tweet` scripts use Python2, while `parse` and `generate` use Python3.
 
 You must create a `SECRET` file with your Twitter consumer key, consumer secret, access key, and access token in different lines, inside of the `scripts` folder.
 
+For tweets
+----------
+
 Run `make init ACCOUNT=name_of_the_account` to create the folders and download the first batch of tweets from a user.
 
 (you should run `make fetch ACCOUNT=name_of_the_account` periodically afterwards to get the new tweets since last time, or `make update` to update them all)
 
-`make generate ACCOUNT=name_of_the_account` will create the tweets and print them on screen.
+For lyrics
+----------
 
-You can run `make tweet ACCOUNT=name_of_the_account` to both generate and automatically post tweets. You'll see them displayed on screen as well.
+Place each song's lyrics in a txt inside `lyrics/name_of_the_band`.
+
+Then, run `make init-lyrics ACCOUNT=name_of_the_band` to automatically create the folder inside `archive` and the needed files.
+
+How to use it
+======
+
+`make generate ACCOUNT=name_of_the_account_or_band` will create the tweets and print them on screen.
+
+You can run `make tweet ACCOUNT=name_of_the_account_or_band` to both generate and automatically post tweets. You'll see them displayed on screen as well.
