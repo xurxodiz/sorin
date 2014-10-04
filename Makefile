@@ -35,6 +35,11 @@ prepare-prose:
 	@perl -pi -Mutf8 -CSAD -e 's|([^.!?»])\n(\n)?|\1 / |g' $(FILE)
 
 fetch:
+	@if [ -f archive/$(ACCOUNT)/id ]; then \
+		make fetch-work ACCOUNT=$(ACCOUNT); \
+	fi
+
+fetch-work:
 	@# read id of last tweet saved, and fetch more
 	@$(eval ID:=$(shell cat archive/$(ACCOUNT)/id))
 	@scripts/fetch.py $(ACCOUNT) $(ID) >archive/$(ACCOUNT)/tmp2
