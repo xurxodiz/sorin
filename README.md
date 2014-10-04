@@ -3,6 +3,8 @@ Sorin
 
 Sorin is a bunch of scripts bundled together that download tweets, parse them into a JSON dictionary, produce random tweets out of it following Markov chain conventions, and then tweet them.
 
+It as been expanded to work with lyrics and prose text too, after some cooking.
+
 You can see it at work on [@MarkovUnchained](http://twitter.com/MarkovUnchained).
 
 
@@ -36,9 +38,21 @@ Run `make init ACCOUNT=name_of_the_account` to create the folders and download t
 For lyrics
 ----------
 
-Place each song's lyrics in a txt inside `lyrics/name_of_the_band`.
+Place each song's lyrics in a txt inside `lyrics/name_of_the_band`. Do not use spaces in the name of the band. It's safe to use them in filenames for each song though.
 
 Then, run `make init-lyrics ACCOUNT=name_of_the_band` to automatically create the folder inside `archive` and the needed files.
+
+Lyrics are expected to alredy be cut in sentences (one per line), as if they were tweets.
+
+For prose
+----------
+
+Place each text in a txt inside `prose/name_of_the_author`. Do not use spaces in the name of the author. It's safe to use them in filenames for each text though.
+
+Then, run `make init-prose ACCOUNT=name_of_the_author` to automatically create the folder inside `archive` and the needed files.
+
+Texts might be composed in paragraphs and include dialog. They will be cut into sentences.
+
 
 How to use it
 ======
