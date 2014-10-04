@@ -21,7 +21,7 @@ init-prose:
 	@make parse ACCOUNT=$(ACCOUNT)
 
 prepare-prose:
-	@# lots of newline shenanigans, so we use perl in this block
+	@# some newline shenanigans, so we use perl in this block
 	@# first remove trailing whitespace
 	@perl -pli -Mutf8 -CSAD -e 's/\s*$$//g' $(FILE)
 	@# A) Then the boy said:
@@ -31,8 +31,8 @@ prepare-prose:
 	@# B) Yikes! \n Why ?
 	@perl -pi -Mutf8 -CSAD -e 's/([.!?]["»]?) ([[:upper:]¡¿"»«])/\1\n\2/g' $(FILE)
 	@# A) Weird as it might be \n this is not a haiku
-	@# B) Weird as it might be / this is not a haiku
-	@perl -pi -Mutf8 -CSAD -e 's|([^.!?»])\n(\n)?|\1 / |g' $(FILE)
+	@# B) Weird as it might be this is not a haiku
+	@perl -pi -Mutf8 -CSAD -e 's|([^.!?»])\s*\n+\s*|\1 |g' $(FILE)
 
 fetch:
 	@if [ -f archive/$(ACCOUNT)/id ]; then \
