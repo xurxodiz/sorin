@@ -11,9 +11,12 @@ init-lyrics:
 	@make parse ACCOUNT=$(ACCOUNT)
 
 fetch:
+	@# read id of last tweet saved, and fetch more
 	@$(eval ID:=$(shell cat archive/$(ACCOUNT)/id))
 	@scripts/fetch.py $(ACCOUNT) $(ID) >archive/$(ACCOUNT)/tmp2
+	@# first line output is new id of last tweet
 	@head -n 1 archive/$(ACCOUNT)/tmp2 > archive/$(ACCOUNT)/id
+	@# the rest is the the log of new tweets fetched
 	@tail -n +2 archive/$(ACCOUNT)/tmp2 >> archive/$(ACCOUNT)/tmp
 	@make depure ACCOUNT=$(ACCOUNT)
 	@make parse ACCOUNT=$(ACCOUNT)
