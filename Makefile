@@ -10,6 +10,30 @@ init-lyrics:
 	@make depure ACCOUNT=$(ACCOUNT)
 	@make parse ACCOUNT=$(ACCOUNT)
 
+init-prose:
+	@# spaces and bash don't play well, copy swapping them for _
+	@$(shell cd prose/$(ACCOUNT)/ && mkdir -p tmp && pax -wrs'/ /_/g' *txt tmp/)
+	@$(foreach FILE,$(wildcard prose/$(ACCOUNT)/tmp/*),make prepare-prose FILE=$(FILE);)
+	@mkdir -p archive/$(ACCOUNT)/
+	@cat prose/$(ACCOUNT)/tmp/*.txt > archive/$(ACCOUNT)/tmp
+	@rm -rf prose/$(ACCOUNT)/tmp
+	@make depure ACCOUNT=$(ACCOUNT)
+	@make parse ACCOUNT=$(ACCOUNT)
+
+prepare-prose:
+	@# lots of newline shenanigans, so we use perl in this block
+	@# first remove trailing whitespace
+	@perl -pli -Mutf8 -CSAD -e 's/\s*$$//g' $(FILE)
+	@# A) Then the boy said:
+	@# B) Then the boy said.
+	@perl -pi -Mutf8 -CSAD -e 's/:\n/.\n/g' $(FILE)
+	@# A) Yikes! Why?
+	@# B) Yikes! \n Why ?
+	@perl -pi -Mutf8 -CSAD -e 's/([.!?]["»]?) ([[:upper:]¡¿"»«])/\1\n\2/g' $(FILE)
+	@# A) Weird as it might be \n this is not a haiku
+	@# B) Weird as it might be / this is not a haiku
+	@perl -pi -Mutf8 -CSAD -e 's|([^.!?»])\n(\n)?|\1 / |g' $(FILE)
+
 fetch:
 	@# read id of last tweet saved, and fetch more
 	@$(eval ID:=$(shell cat archive/$(ACCOUNT)/id))
