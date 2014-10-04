@@ -22,9 +22,15 @@ update:
 	@$(foreach ACC,$(patsubst archive/%,%,$(wildcard archive/*)),make fetch ACCOUNT=$(ACC);)
 
 depure:
-	@sed -i '' 's!\http\(s\)\{0,1\}://[^[:space:]]*!!g' archive/$(ACCOUNT)/tmp
-	@sed -E -i '' 's/^(RT )*(@[[:alnum:]_]+:? )*//' archive/$(ACCOUNT)/tmp
+	@# remove links
+	@sed -i '' 's!http\(s\)\{0,1\}://[^[:space:]]*!!g' archive/$(ACCOUNT)/tmp
+	@# remove manual RTs
+	@sed -E -i '' '/^RT @/d' archive/$(ACCOUNT)/tmp
+	@# remove mentions on replies
+	@sed -E -i '' 's/^(@[[:alnum:]_]+ )+//' archive/$(ACCOUNT)/tmp
+	@# remove duplicate lines
 	@awk '!x[$$0]++' <archive/$(ACCOUNT)/tmp >archive/$(ACCOUNT)/tmp2
+	@# remove empty lines
 	@sed '/^$$/d' <archive/$(ACCOUNT)/tmp2 >archive/$(ACCOUNT)/log
 	@rm archive/$(ACCOUNT)/tmp
 	@rm archive/$(ACCOUNT)/tmp2
