@@ -58,15 +58,15 @@ update:
 
 depure:
 	@# remove links
-	@sed -i '' 's!http\(s\)\{0,1\}://[^[:space:]]*!!g' archive/$(ACCOUNT)/tmp
+	@perl -pi -e 's!https?://[^\s]*!!g' archive/$(ACCOUNT)/tmp
 	@# remove manual RTs
-	@sed -E -i '' '/^RT @/d' archive/$(ACCOUNT)/tmp
+	@perl -i -e 'print unless /^RT @/' archive/$(ACCOUNT)/tmp
 	@# remove mentions on replies
-	@sed -E -i '' 's/^(@[[:alnum:]_]+ )+//' archive/$(ACCOUNT)/tmp
+	@perl -pi -e 's/^(@[[:alnum:]_]+ )+//' archive/$(ACCOUNT)/tmp
 	@# remove duplicate lines
 	@awk '!x[$$0]++' <archive/$(ACCOUNT)/tmp >archive/$(ACCOUNT)/tmp2
 	@# remove empty lines
-	@sed '/^$$/d' <archive/$(ACCOUNT)/tmp2 >archive/$(ACCOUNT)/log
+	@perl -n -e 'print unless /^$$/' <archive/$(ACCOUNT)/tmp2 >archive/$(ACCOUNT)/log
 	@rm archive/$(ACCOUNT)/tmp
 	@rm archive/$(ACCOUNT)/tmp2
 
