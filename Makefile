@@ -1,6 +1,7 @@
 init:
 	@mkdir -p archive/$(ACCOUNT)/
-	@scripts/init.py $(ACCOUNT) > archive/$(ACCOUNT)/tmp
+	@scripts/init.py $(ACCOUNT) > archive/$(ACCOUNT)/tmp2
+	@make split ACCOUNT=$(ACCOUNT)
 	@make depure ACCOUNT=$(ACCOUNT)
 	@make parse ACCOUNT=$(ACCOUNT)
 
@@ -21,7 +22,6 @@ init-prose:
 	@make parse ACCOUNT=$(ACCOUNT)
 
 prepare-prose:
-	@# some newline shenanigans, so we use perl in this block
 	@# first remove trailing whitespace
 	@perl -pli -Mutf8 -CSAD -e 's/\s*$$//g' $(FILE)
 	@# A) Then the boy said:
@@ -43,12 +43,15 @@ fetch-work:
 	@# read id of last tweet saved, and fetch more
 	@$(eval ID:=$(shell cat archive/$(ACCOUNT)/id))
 	@scripts/fetch.py $(ACCOUNT) $(ID) >archive/$(ACCOUNT)/tmp2
+	@make split ACCOUNT=$(ACCOUNT)
+	@make depure ACCOUNT=$(ACCOUNT)
+	@make parse ACCOUNT=$(ACCOUNT)
+
+split:
 	@# first line output is new id of last tweet
 	@head -n 1 archive/$(ACCOUNT)/tmp2 > archive/$(ACCOUNT)/id
 	@# the rest is the the log of new tweets fetched
 	@tail -n +2 archive/$(ACCOUNT)/tmp2 >> archive/$(ACCOUNT)/tmp
-	@make depure ACCOUNT=$(ACCOUNT)
-	@make parse ACCOUNT=$(ACCOUNT)
 
 update:
 	@$(foreach ACC,$(patsubst archive/%,%,$(wildcard archive/*)),make fetch ACCOUNT=$(ACC);)
