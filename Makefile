@@ -60,7 +60,7 @@ depure:
 	@# remove links
 	@perl -pi -e 's!https?://[^\s]*!!g' archive/$(ACCOUNT)/tmp
 	@# remove manual RTs
-	@perl -i -e 'print unless /^RT @/' archive/$(ACCOUNT)/tmp
+	@perl -i -ne 'print unless /^RT @/' archive/$(ACCOUNT)/tmp
 	@# remove mentions on replies
 	@perl -pi -e 's/^(@[[:alnum:]_]+ )+//' archive/$(ACCOUNT)/tmp
 	@# remove duplicate lines
