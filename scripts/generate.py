@@ -41,8 +41,16 @@ def backjump():
 ####
 
 
+###
+# check if a string is a verbatim part of an exiting tweet
+def is_subtweet(s):
+  global tweets
+  return any([tt.find(s) != -1 for tt in tweets])
+###
+
+
 output = tweets[0] # hack to guarantee a first iteration
-while output in tweets or output in past:
+while is_subtweet(output) or output in past:
 
   prev = "\n"
   curr = "\n"
