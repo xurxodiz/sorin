@@ -66,7 +66,7 @@ depure:
 	@# remove duplicate lines
 	@awk '!x[$$0]++' <archive/$(ACCOUNT)/tmp >archive/$(ACCOUNT)/tmp2
 	@# remove empty lines
-	@perl -n -e 'print unless /^$$/' <archive/$(ACCOUNT)/tmp2 >archive/$(ACCOUNT)/log
+	@perl -n -e 'print unless /^$$/' <archive/$(ACCOUNT)/tmp2 >>archive/$(ACCOUNT)/log
 	@rm archive/$(ACCOUNT)/tmp
 	@rm archive/$(ACCOUNT)/tmp2
 
