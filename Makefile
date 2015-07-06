@@ -53,6 +53,8 @@ split:
 	@head -n 1 archive/$(ACCOUNT)/tmp2 > archive/$(ACCOUNT)/id
 	@# the rest is the the log of new tweets fetched
 	@tail -n +2 archive/$(ACCOUNT)/tmp2 >> archive/$(ACCOUNT)/tmp
+	@# we won't need tmp2 anymore
+	@rm archive/$(ACCOUNT)/tmp2
 
 update:
 	@$(foreach ACC,$(patsubst archive/%,%,$(wildcard archive/*)),make fetch ACCOUNT=$(ACC);)
