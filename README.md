@@ -7,6 +7,8 @@ It as been expanded to work with lyrics and prose text too, after some cooking.
 
 You can see it at work on [@MarkovUnchained](http://twitter.com/MarkovUnchained).
 
+Please keep in mind that sorin is developed for use on OSX, therefore some tweaking might be needing for full compatibility on other UNIXes.
+
 
 How it works
 =====
@@ -57,6 +59,6 @@ Texts might be composed in paragraphs and include dialog. They will be cut into 
 How to use it
 ======
 
-`make generate ACCOUNT=name_of_the_account_or_band` will create the tweets and print them on screen.
+`make generate ACCOUNT=name_of_the_account_band_or_author` will create the tweets and print them on screen.
 
 You can run `make tweet ACCOUNT=name_of_the_account_or_band` to both generate and automatically post tweets. You'll see them displayed on screen as well.
