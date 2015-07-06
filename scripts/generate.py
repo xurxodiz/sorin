@@ -16,6 +16,12 @@ with open("archive/"+sys.argv[1]+"/json2", 'r') as f:
 with open("archive/"+sys.argv[1]+"/log", 'r') as f:
   tweets = [l.strip() for l in f.readlines()]
 
+try:
+  with open("archive/"+sys.argv[1]+"/past", 'r+') as f:
+    past = [l.strip() for l in f.readlines()]
+except IOError:
+    past = []
+
 ####
 # jump back a random distance
 def backjump():
@@ -34,8 +40,9 @@ def backjump():
     curr = "\n"
 ####
 
+
 output = tweets[0] # hack to guarantee a first iteration
-while output in tweets:
+while output in tweets or output in past:
 
   prev = "\n"
   curr = "\n"
@@ -67,4 +74,8 @@ while output in tweets:
 output = [w.translate(str.maketrans('', '', '"()[]{}«»¡¿')) for w in output.split()]
 output = " ".join(output)
 
-print(xml.sax.saxutils.unescape(output))
+p = xml.sax.saxutils.unescape(output)
+print(p)
+
+with open("archive/"+sys.argv[1]+"/past", 'a+') as f:
+  f.write(p+"\n")
