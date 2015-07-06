@@ -64,10 +64,13 @@ depure:
 	@perl -i -ne 'print unless /^RT @/' archive/$(ACCOUNT)/tmp
 	@# remove mentions on replies
 	@perl -pi -e 's/^(@[[:alnum:]_]+ )+//' archive/$(ACCOUNT)/tmp
-	@# remove duplicate lines
-	@awk '!x[$$0]++' <archive/$(ACCOUNT)/tmp >archive/$(ACCOUNT)/tmp2
+	@# construct new joined file
+	@cat archive/$(ACCOUNT)/log archive/$(ACCOUNT)/tmp >archive/$(ACCOUNT)/tmp2
 	@# remove empty lines
-	@perl -n -e 'print unless /^$$/' <archive/$(ACCOUNT)/tmp2 >>archive/$(ACCOUNT)/log
+	@perl -i -ne 'print unless /^\s*$$/' archive/$(ACCOUNT)/tmp2
+	@# remove possible duplicated tweets (eg fetch overlap)
+	@awk '!x[$$0]++' <archive/$(ACCOUNT)/tmp2 >archive/$(ACCOUNT)/log
+	@# cleanup
 	@rm archive/$(ACCOUNT)/tmp
 	@rm archive/$(ACCOUNT)/tmp2
 
