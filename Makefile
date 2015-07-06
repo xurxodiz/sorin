@@ -66,6 +66,8 @@ depure:
 	@perl -i -ne 'print unless /^RT @/' archive/$(ACCOUNT)/tmp
 	@# remove mentions on replies
 	@perl -pi -e 's/^(@[[:alnum:]_]+ )+//' archive/$(ACCOUNT)/tmp
+	@# prevent error line below
+	@touch archive/$(ACCOUNT)/log
 	@# construct new joined file
 	@cat archive/$(ACCOUNT)/log archive/$(ACCOUNT)/tmp >archive/$(ACCOUNT)/tmp2
 	@# remove empty lines
