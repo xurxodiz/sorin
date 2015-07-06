@@ -26,8 +26,8 @@ except IOError:
 # jump back a random distance
 def backjump():
   global sentence, numchars, curr, prev
-  cutpoint = random.randint(1, len(sentence))
-  for i in range(1, cutpoint):
+  cutpoint = random.randint(0, len(sentence))
+  for i in range(0, cutpoint):
     popped = sentence.pop()
     numchars = numchars - 1 - len(popped)
   try:
