@@ -10,29 +10,42 @@ import random
 with open("archive/"+sys.argv[1]+"/json", 'r') as f:
   chain = json.load(f)
 
+with open("archive/"+sys.argv[1]+"/json2", 'r') as f:
+  chain2 = json.load(f)
+
 with open("archive/"+sys.argv[1]+"/log", 'r') as f:
   tweets = [l.strip() for l in f.readlines()]
-
 
 ####
 # jump back a random distance
 def backjump():
-  global sentence, numchars, curr
+  global sentence, numchars, curr, prev
   cutpoint = random.randint(1, len(sentence))
   for i in range(1, cutpoint):
     popped = sentence.pop()
     numchars = numchars - 1 - len(popped)
-  curr = sentence[-1]
+  try:
+    prev = sentence[-2]
+  except IndexError:
+    prev = "\n"
+  try:
+    curr = sentence[-1]
+  except IndexError:
+    curr = "\n"
 ####
 
 output = tweets[0] # hack to guarantee a first iteration
 while output in tweets:
 
+  prev = "\n"
   curr = "\n"
   numchars = -1 # offset the extra space counted in the first word
   sentence = []
   while True:
-    choices = [x for x in chain[curr]]
+    if random.choice([True, False]):
+      choices = [x for x in chain[curr]]
+    else:
+      choices = [x for x in chain2[prev+" "+curr]]
     if [] == choices:
       backjump()
       continue
@@ -46,6 +59,7 @@ while output in tweets:
       else:
         numchars += 1 + len(word)
         sentence.append(word)
+        prev = curr
         curr = word
   output = " ".join(sentence)
 
