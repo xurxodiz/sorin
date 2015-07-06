@@ -36,6 +36,7 @@ prepare-prose:
 
 fetch:
 	@if [ -f archive/$(ACCOUNT)/id ]; then \
+		echo "Fetching $(ACCOUNT)..."; \
 		make fetch-work ACCOUNT=$(ACCOUNT); \
 	fi
 
