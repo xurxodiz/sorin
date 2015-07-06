@@ -57,7 +57,7 @@ while is_subtweet(output) or output in past:
   numchars = -1 # offset the extra space counted in the first word
   sentence = []
   while True:
-    if random.choice([True, False]):
+    if random.choice([True, False, False]):
       choices = [x for x in chain[curr]]
     else:
       choices = [x for x in chain2[prev+" "+curr]]
