@@ -73,10 +73,12 @@ depure:
 	@# remove empty lines
 	@perl -i -ne 'print unless /^\s*$$/' archive/$(ACCOUNT)/tmp2
 	@# remove possible duplicated tweets (eg fetch overlap)
-	@awk '!x[$$0]++' <archive/$(ACCOUNT)/tmp2 >archive/$(ACCOUNT)/log
+	@awk '!x[$$0]++' <archive/$(ACCOUNT)/tmp2 >archive/$(ACCOUNT)/tmp3
 	@# cleanup
 	@rm archive/$(ACCOUNT)/tmp
 	@rm archive/$(ACCOUNT)/tmp2
+	@# we don't overwrite log until the very end to prevent screwups
+	@mv archive/$(ACCOUNT)/tmp3 archive/$(ACCOUNT)/log
 
 generate:
 	@scripts/generate.py $(ACCOUNT)
