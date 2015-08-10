@@ -61,7 +61,7 @@ update:
 
 depure:
 	@# remove links
-	@perl -pi -e 's!https?://[^\s]*!!g' archive/$(ACCOUNT)/tmp
+	@perl -pi -e 's!(: )?https?:/[^\s]+!!g' archive/$(ACCOUNT)/tmp
 	@# remove manual RTs
 	@perl -i -ne 'print unless /^RT @/' archive/$(ACCOUNT)/tmp
 	@# remove mentions on replies
