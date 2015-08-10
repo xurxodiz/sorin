@@ -59,6 +59,9 @@ split:
 update:
 	@$(foreach ACC,$(patsubst archive/%,%,$(wildcard archive/*)),make fetch ACCOUNT=$(ACC);)
 
+clean-past:
+	@$(foreach ACC,$(patsubst archive/%,%,$(wildcard archive/*)),rm -rf archive/$(ACC)/past;)
+
 depure:
 	@# remove links
 	@perl -pi -e 's!(: )?https?:/[^\s]+!!g' archive/$(ACCOUNT)/tmp
