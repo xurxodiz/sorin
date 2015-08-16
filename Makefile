@@ -34,6 +34,26 @@ prepare-prose:
 	@# B) Weird as it might be this is not a haiku
 	@perl -pi -Mutf8 -CSAD -e 's|([^.!?»])\s*\n+\s*|\1 |g' $(FILE)
 
+init-theatre:
+	@$(foreach FILE,$(wildcard theatre/$(SHOW)/*.pdf theatre/$(SHOW)/*/*.pdf),make prepare-theatre FILE=$(FILE);)
+	@$(eval CHARACTERS:=$(shell cat theatre/$(SHOW)/characters))
+	@$(foreach CHARACTER,$(CHARACTERS),make prepare-theatre-character SHOW=$(SHOW) CHARACTER=$(CHARACTER);)
+	@(cd theatre/$(SHOW) && find . -name "*.txt" -type f -delete)
+
+prepare-theatre:
+	@# using -layout might improve results, but it needs more work for a multiline match
+	@pdftotext -enc UTF-8 -eol unix -nopgbrk $(FILE) $(FILE).txt
+	@perl -pi -Mutf8 -CSAD -e 's/[^[:print:]\n]//' $(FILE).txt
+
+prepare-theatre-character:
+	@$(eval ACCOUNT:=$(shell echo $(SHOW)-$(CHARACTER)))
+	@mkdir -p archive/$(ACCOUNT)
+	@(cd theatre/$(SHOW) && find . -name "*.txt" -print0 | xargs -0 cat) > archive/$(ACCOUNT)/tmp
+	@perl -ni -Mutf8 -CSAD -e 's/^$(CHARACTER) ([A-Z])/\1/ && print' archive/$(ACCOUNT)/tmp
+	@perl -pi -Mutf8 -CSAD -e 's/\s+\([^)]+\)\s+/ /' archive/$(ACCOUNT)/tmp
+	@make depure ACCOUNT=$(ACCOUNT)
+	@make parse ACCOUNT=$(ACCOUNT)
+
 fetch:
 	@if [ -f archive/$(ACCOUNT)/id ]; then \
 		echo "Fetching $(ACCOUNT)..."; \
