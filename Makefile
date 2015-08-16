@@ -46,7 +46,7 @@ prepare-theatre:
 	@perl -pi -Mutf8 -CSAD -e 's/[^[:print:]\n]//' $(FILE).txt
 
 prepare-theatre-character:
-	@$(eval ACCOUNT:=$(shell echo $(SHOW)-$(CHARACTER)))
+	@$(eval ACCOUNT:=$(shell echo $(SHOW)-$(CHARACTER) | tr " " "_"))
 	@mkdir -p archive/$(ACCOUNT)
 	@(cd theatre/$(SHOW) && find . -name "*.txt" -print0 | xargs -0 cat) > archive/$(ACCOUNT)/tmp
 	@perl -ni -Mutf8 -CSAD -e 's/^$(CHARACTER) ([A-Z])/\1/ && print' archive/$(ACCOUNT)/tmp
