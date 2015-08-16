@@ -68,7 +68,7 @@ Texts might be composed in paragraphs and include dialog. They will be cut into 
 For theatrical scripts
 -------------
 
-For each show (film, series...) create a folder inside `theatre/name_of_show`. You can then place the script in PDF format inside that folder if it's a film, or create folders for seasons and then the script for each episode inside them if it's a series. Whatever is better for you.
+For each show (film, series...) create a folder inside `theatre/name_of_show` (do not use spaces in the name of the show). You can then place the script in PDF format inside that folder if it's a film, or create folders for seasons and then the script for each episode inside them if it's a series. Whatever is better for you.
 
 Inside the `name_of_show` folder you need a text file called simply `characters` with each line holding the name of a character you want to extract. It needs to be uppercase if the characters' names are uppercase in the script (as they usually are).
 
