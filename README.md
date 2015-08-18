@@ -32,9 +32,11 @@ Also, brackets and quotation marks of all kinds are removed, as well as opening 
 Setup
 =====
 
-You'll need Python2 and the [python-twitter](https://github.com/bear/python-twitter) library–--the reason why some parts are still stuck at it---but also Python3 (unicode string handling is much smoother with it). `init`, `fetch` and `tweet` scripts use Python2, while `parse` and `generate` use Python3.
+You need Python3 and Perl.
 
-You must create a `SECRET` file with your Twitter consumer key, consumer secret, access key, and access token in different lines, inside of the `scripts` folder.
+If you want to init or fetch from Twitter, or tweet, you need Python2 and the [python-twitter](https://github.com/bear/python-twitter) library as well. You must also create a `SECRET` file with your Twitter consumer key, consumer secret, access key, and access token in different lines, inside of the `scripts` folder.
+
+To `init-theatre` you need the `pdftotext` utility. You can get it from the `xpdf` package: on Linux use your favourite package manager, and on OSX just `brew tap homebrew/x11` and `brew install xpdf`.
 
 
 For tweets
