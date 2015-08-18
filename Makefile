@@ -1,6 +1,6 @@
-init:
+init-twitter:
 	@mkdir -p archive/$(ACCOUNT)/
-	@scripts/init.py $(ACCOUNT) > archive/$(ACCOUNT)/tmp2
+	@scripts/init-twitter.py $(ACCOUNT) > archive/$(ACCOUNT)/tmp2
 	@make split ACCOUNT=$(ACCOUNT)
 	@make depure ACCOUNT=$(ACCOUNT)
 	@make parse ACCOUNT=$(ACCOUNT)

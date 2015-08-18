@@ -34,7 +34,7 @@ Requisites
 
 You need Python3 and Perl.
 
-If you want to init or fetch from Twitter, or tweet, you need Python2 and the [python-twitter](https://github.com/bear/python-twitter) library as well. You must also create a `SECRET` file with your Twitter consumer key, consumer secret, access key, and access token in different lines, inside of the `scripts` folder.
+If you want to `init` or `fetch` from Twitter, or `tweet`, you need Python2 and the [python-twitter](https://github.com/bear/python-twitter) library as well. You must also create a `SECRET` file with your Twitter consumer key, consumer secret, access key, and access token in different lines, inside of the `scripts` folder.
 
 To `init-theatre` you need the `pdftotext` utility. You can get it from the `xpdf` package: on Linux use your favourite package manager, and on OSX just `brew tap homebrew/x11` and `brew install xpdf`.
 
@@ -42,7 +42,7 @@ To `init-theatre` you need the `pdftotext` utility. You can get it from the `xpd
 For tweets
 ----------
 
-Run `make init ACCOUNT=name_of_the_account` to create the folders and download the first batch of tweets from a user.
+Run `make init-twitter ACCOUNT=name_of_the_account` to create the folders and download the first batch of tweets from a user.
 
 (you should run `make fetch ACCOUNT=name_of_the_account` periodically afterwards to get the new tweets since last time, or `make update` to update them all)
 
