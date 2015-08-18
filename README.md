@@ -29,7 +29,7 @@ All URLs are removed, as well as initial "RT" prefixes, and any colons found rig
 Also, brackets and quotation marks of all kinds are removed, as well as opening ¿ and ¡ signs.
 
 
-Setup
+Requisites
 =====
 
 You need Python3 and Perl.
