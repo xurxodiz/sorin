@@ -17,7 +17,8 @@ subject = sys.argv[1]
 sinceid = int(sys.argv[2])
 
 for i in range(1,5):
-	statuses = t.statuses.user_timeline(screen_name=subject, count=200, since_id=sinceid)
+	statuses = t.statuses.user_timeline(screen_name=subject, count=200,
+    include_rts=False, exclude_replies=True, trim_user=True, since_id=sinceid)
 	if statuses:
 		for s in statuses:
 			lines.append(s['text'])

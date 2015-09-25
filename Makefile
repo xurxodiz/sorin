@@ -84,18 +84,14 @@ clean-past:
 
 depure:
 	@# remove links
-	@perl -pi -e 's!(: )?https?:/[^\s]+!!g' archive/$(ACCOUNT)/tmp
-	@# remove manual RTs
-	@perl -i -ne 'print unless /^RT @/' archive/$(ACCOUNT)/tmp
-	@# remove mentions on replies
-	@perl -pi -e 's/^(@[[:alnum:]_]+ )+//' archive/$(ACCOUNT)/tmp
+	@perl -pi -e 's!(: )?https?:/[^\s]+!🔗!g' archive/$(ACCOUNT)/tmp
 	@# prevent error line below
 	@touch archive/$(ACCOUNT)/log
 	@# construct new joined file
 	@cat archive/$(ACCOUNT)/log archive/$(ACCOUNT)/tmp >archive/$(ACCOUNT)/tmp2
 	@# remove empty lines
 	@perl -i -ne 'print unless /^\s*$$/' archive/$(ACCOUNT)/tmp2
-	@# remove possible duplicated tweets (eg fetch overlap)
+	@# remove possible duplicated lines (eg twitter fetch overlap)
 	@awk '!x[$$0]++' <archive/$(ACCOUNT)/tmp2 >archive/$(ACCOUNT)/tmp3
 	@# cleanup
 	@rm archive/$(ACCOUNT)/tmp

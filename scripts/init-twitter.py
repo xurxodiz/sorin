@@ -17,7 +17,8 @@ subject = sys.argv[1]
 maxid = sys.maxsize # kinda hackish, i know
 
 for i in range(1,15):
-  statuses = t.statuses.user_timeline(screen_name=subject, count=200, max_id=maxid)
+  statuses = t.statuses.user_timeline(screen_name=subject, count=200,
+    include_rts=False, exclude_replies=True, trim_user=True, max_id=maxid)
   if statuses:
     for s in statuses:
       lines.append(s['text'])

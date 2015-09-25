@@ -22,12 +22,11 @@ After a sentence is generated, it is checked that it is neither an exact duplica
 
 ### Source sentence postprocessing
 
-(most of this only matters for tweets, but currently it is done to all source sentences anyway)
+All URLs are removed and replaced by the Unicode 🔗, as well as preceeding colons found right before a URL.
 
-All URLs are removed, as well as initial "RT" prefixes, and any colons found right before a URL. @-Mentions in the middle of the text are fine, but they are removed if at the beggining of the sentence. This (done already in subtask `make depure`) is so texts tweeted by the algorithm are never output as direct replies, and can be viewed by everybody.
+Brackets and quotation marks of all kinds are removed, as well as opening ¿ and ¡ signs.
 
-Also, brackets and quotation marks of all kinds are removed, as well as opening ¿ and ¡ signs.
-
+Please note that when fetching tweets, both retweets and direct replies are explicitly not requested (they used to be but then purged in `make depure`).
 
 Requisites
 =====
