@@ -1,7 +1,7 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import twitter
+from twitter import *
 import sys
 
 with open('scripts/SECRET', 'r') as f:
@@ -9,16 +9,16 @@ with open('scripts/SECRET', 'r') as f:
 
 # careful! strip the endline!
 
-api = twitter.Api(consumer_key=c_key.strip(),
-                      consumer_secret=c_secret.strip(),
-                      access_token_key=a_key.strip(),
-                      access_token_secret=a_secret.strip())
+t = Twitter(auth=OAuth(a_key.strip(),
+                       a_secret.strip(),
+                       c_key.strip(),
+                       c_secret.strip()))
 
 if len(sys.argv) > 1:
 	tweet = sys.argv[1]
 else:
 	tweet = sys.stdin.read().strip()
 
-status = api.PostUpdate(tweet)
+t.statuses.update(status=tweet)
 
-print tweet
+print(tweet)

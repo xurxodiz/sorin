@@ -34,7 +34,7 @@ Requisites
 
 You need Python3 and Perl.
 
-If you want to `init` or `fetch` from Twitter, or `tweet`, you need Python2 and the [python-twitter](https://github.com/bear/python-twitter) library as well. You must also create a `SECRET` file with your Twitter consumer key, consumer secret, access key, and access token in different lines, inside of the `scripts` folder.
+If you want to `init` or `fetch` from Twitter, or `tweet`, you need the [Python Twitter Tools](https://github.com/sixohsix/twitter) as well. You must also create a `SECRET` text file with your Twitter access token key, access token, consumer key and consumer secret in different lines (in this order) inside of the `scripts` folder.
 
 To `init-theatre` you need the `pdftotext` utility. You can get it from the `xpdf` package: on Linux use your favourite package manager, and on OSX just `brew tap homebrew/x11` and `brew install xpdf`.
 
