@@ -106,7 +106,7 @@ parse:
 	@scripts/parse.py $(ACCOUNT)
 
 tweet:
-	@$(eval TWEET:=$(shell make generate ACCOUNT=$(ACCOUNT) --no-print-directory 2>/dev/null))
+	@$(eval TWEET:=$(shell make generate ACCOUNT=$(ACCOUNT) --no-print-directory))
 	@if [ "x" != "x$(TWEET)" ]; then \
 	  scripts/tweet.py "$(TWEET)"; \
 	fi
