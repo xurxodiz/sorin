@@ -84,7 +84,9 @@ clean-past:
 
 depure:
 	@# remove links
-	@perl -pi -e 's!(: )?https?:/[^\s]+!. !g' archive/$(ACCOUNT)/tmp
+	@perl -pi -e 's!([.!?]) https?:/[^\s]+!\1 !g' archive/$(ACCOUNT)/tmp
+	@perl -pi -e 's!: https?:/[^\s]+!. !g' archive/$(ACCOUNT)/tmp
+	@perl -pi -e 's! https?:/[^\s]+!!g' archive/$(ACCOUNT)/tmp
 	@# prevent error line below
 	@touch archive/$(ACCOUNT)/log
 	@# construct new joined file
