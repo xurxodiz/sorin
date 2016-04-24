@@ -22,7 +22,7 @@ After a sentence is generated, it is checked that it is neither an exact duplica
 
 ### Source sentence postprocessing
 
-All URLs are removed and replaced by the Unicode 🔗, as well as preceeding colons found right before a URL.
+All URLs are removed, as well as preceeding colons if any, and a period is placed instead--unless the previous sentence already had it (or a ! or ?).
 
 Brackets and quotation marks of all kinds are removed, as well as opening ¿ and ¡ signs.
 
