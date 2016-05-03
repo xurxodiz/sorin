@@ -26,7 +26,7 @@ All URLs are removed, as well as preceeding colons if any, and a period is place
 
 Brackets and quotation marks of all kinds are removed, as well as opening ¿ and ¡ signs.
 
-Please note that when fetching tweets, both retweets and direct replies are explicitly not requested (they used to be but then purged in `make depure`).
+Please note that when fetching tweets, both retweets and direct replies are explicitly not requested.
 
 Requisites
 =====
