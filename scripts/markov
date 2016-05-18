@@ -1,0 +1,20 @@
+#! /usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import io
+import sys
+from parse import get_chains
+from generate import generate
+
+fi = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')
+
+corpus = []
+
+for line in fi:
+	corpus.append(line)
+
+c1, c2 = get_chains(corpus)
+g = generate(c1, c2, corpus, [])
+
+print(g)
+

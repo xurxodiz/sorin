@@ -84,3 +84,13 @@ How to use it
 You can run `make tweet ACCOUNT=name_of_the_account` to both generate and automatically tweet the sentences. You'll see them displayed on screen as well.
 
 `make clean-past` clears the log of past generated sentences (see above in *How it works* for more info on the checks performed).
+
+There's also a (Python3 too) script called `scripts/markov` that can be used by piping the corpus directly into it. It will generate the JSON dictionaries on the fly (no dump) and use them to generate a chain. It saves no state, so repeats are possible (no check against previous generations). The corpus must be a single file, with each sentence in a line, and words separated by a space. Example use:
+
+  cat myfile.txt | scripts/markov
+
+Of course if you are creative and thanks to the magic of pipes, you can do stuff like
+
+  cat *.csv | cut -f2 | scripts/markov
+
+Or symlink the script from `/usr/local/bin` or somewhere else in your `PATH`, etc.
