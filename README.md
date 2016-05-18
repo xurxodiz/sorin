@@ -91,6 +91,6 @@ There's also a (Python3 too) script called `scripts/markov` that can be used by 
 
 Of course if you are creative and thanks to the magic of pipes, you can do stuff like
 
-    cat *.csv | cut -f2 | scripts/markov
+    cat *.csv | cut -f2 -d"," | scripts/markov
 
 Or symlink the script from `/usr/local/bin` or somewhere else in your `PATH`, etc.
