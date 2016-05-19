@@ -6,12 +6,11 @@ import sys
 from parse import get_chains
 from generate import generate_with_checks
 
-fi = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')
-
 corpus = []
 
-for line in fi:
-	corpus.append(line)
+with io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8') as fi:
+	for line in fi:
+		corpus.append(line)
 
 c1, c2 = get_chains(corpus)
 
