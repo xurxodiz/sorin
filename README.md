@@ -94,3 +94,8 @@ Of course if you are creative and thanks to the magic of pipes, you can do stuff
     cat *.csv | cut -f2 -d"," | scripts/markov
 
 Or symlink the script from `/usr/local/bin` or somewhere else in your `PATH`, etc.
+
+By default, it sets the maximum length at 140 like a tweet, but you can pass it a parameter to modify it:
+
+  cat *.txt | scripts/markov 256
+  

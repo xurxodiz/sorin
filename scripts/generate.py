@@ -10,20 +10,12 @@ import random
 
 ####
 # jump back a random distance
-def backjump(sentence, numchars, curr, prev):
+def backjump(sentence, numchars):
   cutpoint = random.randint(0, len(sentence))
   for i in range(0, cutpoint):
     popped = sentence.pop()
     numchars = numchars - 1 - len(popped)
-  try:
-    prev = sentence[-2]
-  except IndexError:
-    prev = "\n"
-  try:
-    curr = sentence[-1]
-  except IndexError:
-    curr = "\n"
-  return sentence, numchars, curr, prev
+  return sentence, numchars
 ####
 
 
@@ -37,42 +29,44 @@ def is_subtweet(tweets, s):
 ###
 # generate a tweet based on the 1-gram and 2-gram chains
 # and check against existing and past generated tweets
-def generate(chain, chain2, tweets, past):
+def generate(maxlen, chain, chain2):
+  numchars = -1 # offset the extra space counted in the first word
+  sentence = []
+  while True:
+    prev = sentence[-2] if len(sentence) > 1 else "\n"
+    curr = sentence[-1] if len(sentence) > 0 else "\n"
+    if random.choice([True, False, False]):
+      choices = [x for x in chain[curr]]
+    else:
+      choices = [x for x in chain2[prev+" "+curr]]
+    if [] == choices:
+      sentence, numchars = backjump(sentence, numchars)
+      continue
+    word = random.choice(choices)
+    if not word:
+      break # end of sentence
+    else:
+      if (numchars + 1 + len(word)) >= maxlen:
+        sentence, numchars = backjump(sentence, numchars)
+        continue
+      else:
+        numchars += 1 + len(word)
+        sentence.append(word)
+  return " ".join(sentence)
+
+
+def generate_with_checks(maxlen, chain, chain2, tweets, past):
   output = tweets[0] # hack to guarantee a first iteration
   while is_subtweet(tweets, output) or output in past:
-
-    prev = "\n"
-    curr = "\n"
-    numchars = -1 # offset the extra space counted in the first word
-    sentence = []
-    while True:
-      if random.choice([True, False, False]):
-        choices = [x for x in chain[curr]]
-      else:
-        choices = [x for x in chain2[prev+" "+curr]]
-      if [] == choices:
-        backjump()
-        continue
-      word = random.choice(choices)
-      if not word:
-        break # end of sentence
-      else:
-        if (numchars + 1 + len(word)) >= 140:
-          sentence, numchars, curr, prev = backjump(sentence, numchars, curr, prev)
-          continue
-        else:
-          numchars += 1 + len(word)
-          sentence.append(word)
-          prev = curr
-          curr = word
-    output = " ".join(sentence)
+    output = generate(maxlen, chain, chain2)
 
   # we leave ! and ? since they make sense isolated
   output = [w.translate(str.maketrans('', '', '"()[]{}«»¡¿')) for w in output.split()]
   output = " ".join(output)
+  output = xml.sax.saxutils.unescape(output)
 
-  return xml.sax.saxutils.unescape(output)
-  
+  return output
+
 
 if __name__ == "__main__":
 
@@ -91,9 +85,9 @@ if __name__ == "__main__":
   except IOError:
       past = []
 
-  p = generate(chain, chain2, tweets, past)
+  output = generate_with_checks(140, chain, chain2, tweets, past)
 
-  print(p)
+  print(output)
 
   with open("archive/"+sys.argv[1]+"/past", 'a+') as f:
-    f.write(p+"\n")
+    f.write(output+"\n")

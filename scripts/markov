@@ -4,7 +4,7 @@
 import io
 import sys
 from parse import get_chains
-from generate import generate
+from generate import generate_with_checks
 
 fi = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')
 
@@ -14,7 +14,13 @@ for line in fi:
 	corpus.append(line)
 
 c1, c2 = get_chains(corpus)
-g = generate(c1, c2, corpus, [])
+
+try:
+	maxlen = int(sys.argv[1])
+except (ValueError, IndexError):
+	maxlen = 140
+
+g = generate_with_checks(maxlen, c1, c2, corpus, [])
 
 print(g)
 
