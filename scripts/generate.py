@@ -21,25 +21,53 @@ def backjump(sentence, numchars):
 
 ###
 # check if a string is a verbatim part of an exiting tweet
-def is_subtweet(tweets, s):
-  return any([tt.find(s) != -1 for tt in tweets])
+def is_subtweet(haystack, needle):
+    """
+    Source: http://codereview.stackexchange.com/questions/19627/finding-sub-list
+    Return the index at which the sequence needle appears in the
+    sequence haystack, or -1 if it is not found, using the Boyer-
+    Moore-Horspool algorithm. The elements of needle and haystack must
+    be hashable.
+
+    >>> find([1, 1, 2], [1, 2])
+    1
+
+    """
+    for hay in haystack:
+      h = len(hay)
+      n = len(needle)
+      skip = {needle[i]: n - i - 1 for i in range(n - 1)}
+      i = n - 1
+      while i < h:
+          for j in range(n):
+              if hay[i - j] != needle[-j - 1]:
+                  i += skip.get(hay[i], n)
+                  break
+          else:
+              #return i - n + 1
+              return True
+      #return -1
+    return False
 ###
 
 
 ###
 # generate a tweet based on the 1-gram and 2-gram chains
 # and check against existing and past generated tweets
-def generate(maxlen, chain, chain2):
+def generate(maxlen, chains, odds=None):
   numchars = -1 # offset the extra space counted in the first word
   sentence = []
   while True:
-    prev = sentence[-2] if len(sentence) > 1 else ""
-    curr = sentence[-1] if len(sentence) > 0 else ""
     try:
-      if random.choice([True, False, False]):
-        choices = [x for x in chain[curr]]
+      if odds:
+        ngram = random.choice(odds)
       else:
-        choices = [x for x in chain2[prev][curr]]
+        ngram = random.choice(list(chains.keys()))
+      choices = chains[ngram]
+      while ngram:
+        w = sentence[-ngram] if len(sentence) > (ngram-1) else ""
+        choices = choices[w]
+        ngram -= 1
     except KeyError:
       choices = []
     if [] == choices:
@@ -55,29 +83,26 @@ def generate(maxlen, chain, chain2):
       else:
         numchars += 1 + len(word)
         sentence.append(word)
-  return " ".join(sentence)
+  return sentence
 
 
-def generate_with_checks(maxlen, chain, chain2, tweets, past):
-  output = tweets[0] # hack to guarantee a first iteration
-  while is_subtweet(tweets, output) or output in past:
-    output = generate(maxlen, chain, chain2)
-
-  # we leave ! and ? since they make sense isolated
-  output = [w.translate(str.maketrans('', '', '"()[]{}«»¡¿')) for w in output.split()]
-  output = " ".join(output)
-  output = xml.sax.saxutils.unescape(output)
-
+def generate_with_checks(maxlen, chains, backlog, odds=None):
+  while True:
+    output = generate(maxlen, chains, odds)
+    if not is_subtweet(backlog, output):
+      break
   return output
 
 
 if __name__ == "__main__":
 
+  chains = {}
+
   with open("archive/"+sys.argv[1]+"/json", 'r') as f:
-    chain = json.load(f)
+    chains[1] = json.load(f)
 
   with open("archive/"+sys.argv[1]+"/json2", 'r') as f:
-    chain2 = json.load(f)
+    chains[2] = json.load(f)
 
   with open("archive/"+sys.argv[1]+"/log", 'r') as f:
     tweets = [l.strip() for l in f.readlines()]
@@ -88,7 +113,12 @@ if __name__ == "__main__":
   except IOError:
       past = []
 
-  output = generate_with_checks(140, chain, chain2, tweets, past)
+  backlog = [s.split(" ") for s in tweets+past]
+  output = generate_with_checks(140, chains, backlog, [1, 2, 2])
+  # we leave ! and ? since they make sense isolated
+  output = [w.translate(str.maketrans('', '', '"()[]{}«»¡¿')) for w in output]
+  output = " ".join(output)
+  output = xml.sax.saxutils.unescape(output)
 
   print(output)
 
