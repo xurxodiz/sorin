@@ -33,12 +33,15 @@ def generate(maxlen, chain, chain2):
   numchars = -1 # offset the extra space counted in the first word
   sentence = []
   while True:
-    prev = sentence[-2] if len(sentence) > 1 else "\n"
-    curr = sentence[-1] if len(sentence) > 0 else "\n"
-    if random.choice([True, False, False]):
-      choices = [x for x in chain[curr]]
-    else:
-      choices = [x for x in chain2[prev+" "+curr]]
+    prev = sentence[-2] if len(sentence) > 1 else ""
+    curr = sentence[-1] if len(sentence) > 0 else ""
+    try:
+      if random.choice([True, False, False]):
+        choices = [x for x in chain[curr]]
+      else:
+        choices = [x for x in chain2[prev][curr]]
+    except KeyError:
+      choices = []
     if [] == choices:
       sentence, numchars = backjump(sentence, numchars)
       continue
