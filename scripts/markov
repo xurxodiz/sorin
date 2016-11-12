@@ -3,23 +3,19 @@
 
 import io
 import sys
-from parse import get_chains
-from generate import generate_with_checks
+from Markov import Markov
 
 corpus = []
 
 with io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8') as fi:
-	for line in fi:
-		corpus.append(line)
-
-c1, c2 = get_chains(corpus)
+	corpus = [l.split() for l in fi if l.strip()]
 
 try:
 	maxlen = int(sys.argv[1])
 except (ValueError, IndexError):
 	maxlen = 140
 
-g = generate_with_checks(maxlen, c1, c2, corpus, [])
+m = Markov(corpus=corpus, odds=[1])
+g = m.linearize(m.generate(maxlen))
 
 print(g)
-
