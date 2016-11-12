@@ -3,12 +3,14 @@
 
 import json
 import random
+import sys
 
 class Markov:
 
-  def __init__(self, corpusFile=None, corpus=[], chainsFile=None, chains={}, separator=" ", odds=[], backlogFile=None, backlog=[]):
+  def __init__(self, corpusFile=None, corpusStdin=False, corpus=[], chainsFile=None, chains={}, separator=" ", sentenceSeparator="\n", odds=[], backlogFile=None, backlog=[]):
 
     self.__separator = separator
+    self.__sentence_separator = sentenceSeparator
     self.__odds = odds
 
     if backlogFile:
@@ -16,7 +18,9 @@ class Markov:
     else:
       self.__backlog = backlog
 
-    if corpusFile:
+    if corpusStdin:
+      self.load_corpus("") # will read from stdin
+    elif corpusFile:
       self.load_corpus(corpusFile)
     else:
       self.__corpus = corpus
@@ -28,7 +32,7 @@ class Markov:
 
     if not self.__chains:
       if self.__corpus:
-        self.make_chains([1, 2, 3])
+        self.make_chains(list(set(self.__odds)))
       else:
         raise ArgumentError("Either corpus or chains need to be provided")
 
@@ -44,8 +48,12 @@ class Markov:
 
 
   def __load_file(self, filepath):
-    with open(filepath, 'r', encoding='utf-8') as f:
-      return [l.strip().split(self.__separator) for l in f]
+    with open(filepath, 'r', encoding='utf-8') if filepath else sys.stdin as f:
+      txt = f.read().split(self.__sentence_separator)
+      if not self.__separator:
+        return [list(l) for l in txt] # split every character
+      else:
+        return [l.split(self.__separator) for l in txt]
 
 
   def load_chains(self, filepath):
