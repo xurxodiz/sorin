@@ -1,13 +1,76 @@
 Sorin
 =====
 
-Sorin is a bunch of scripts bundled together that read sentences, parse them into a JSON dictionary, produce random sentences out of them following Markov chain conventions, and then tweet them.
+Sorin is a bundle of scripts for making Markov chains. It started with tweets, but it has been expanded to work with lyrics, prose and theatrical scripts, and has spawned a command line utility that rocks.
 
-It started with tweets, but it has been expanded to work with lyrics, prose and theatrical scripts.
+You can see a demo at work on [@MarkovUnchained](http://twitter.com/MarkovUnchained).
 
-You can see it at work on [@MarkovUnchained](http://twitter.com/MarkovUnchained).
+Please keep in mind that the sorin Makefiles are developed under OSX, so even if I try to be Linux-compliant, I can't guarantee full compatibility (the tweaking needed, in any case, should be quite minor).
 
-Please keep in mind that sorin is developed under OSX, so even if I try to be Linux-compliant, I can't guarantee full compatibility (the tweaking needed, in any case, should be quite minor).
+The command line utility
+=====
+
+This is the cool part now. It can read the corpus from a file or by piping into it. It will generate the necessary internal dictionaries on the fly, or load them from a file (and saving them if you want). You can specify the delimiters that separate the sentences and the tokens inside them. You can fix a maximum length of the generated strings and ask it to generate more than one chain each time. It will check that the production is not a repeat of the corpus or of a previous backlog in some file. And you can tell the ngram usage according to a list of odds.
+
+Best way to check all parameters is to `scripts/markov -h`, but here are some examples.
+
+Let's say we have a list of numbers and we want to generate a chain based on them:
+
+    $ echo -n "87964|467709|386|50876|4489076" | scripts/markov -x "|" -d ""
+    509
+
+(note the `-n` in the `echo` to avoid that pesky trailing newline)
+
+We use `-x` for the sentence delimiter and `-d` for the token delimiter. Now, the result is a bit short, so we can set a minimum and maximum length as well with `-m` and `-M`:
+
+    $ echo -n "87964|467709|386|50876|4489076" | scripts/markov -d "" -x "|" -m 7 -M 9
+    48909676
+
+This way we get a number with between 7 and 9 digits (both included).
+
+If you get your hands on a big list of words, you can have fun creating words as well. Words are a bit heavier, so let's save time by saving our internal dictionaries:
+
+    $ cat dict.txt | scripts/markov -s dict.json -d "" -o 2 3 -n 0
+
+We use `-s` to name the output file and `-o` to ask for 2 and 3-grams. Again, the delimiter is going to be empty, since each character will be its own token. Finally, since we don't want it to generate anything at this moment (zero output), we set `-n` to 0.
+
+Now we can use this dict to generate our words!
+
+    $ cat dict.txt | scripts/markov -l dict.json -d "" -n 3
+    enviar
+    guridupiése
+    ransador
+
+The dictionary is loaded with `-l` and the number of productions wanted with `-n` as before. Note we need to set the token delimiter again with `-d`, because it's used to *glue* together the tokens in the output.
+
+But, what's this? **enviar** is already a word! That's not fun. To check that the output is always new, pass the `-k` flag:
+
+    $ cat dict.txt | scripts/markov -l dict.json -d "" -k
+    conalsaprota
+
+Much better :)
+
+If you want to play with the odds of using each of the ngrams present in the dictionary, you can do it again with the `-o`option:
+
+    $ cat dict.txt | scripts/markov -l dict.json -d "" -o 2 3 3 -k
+    bilihuilla
+
+With this above command, for each letter it chooses it will do so 66% of the time based on 3-grams, and 33% of the time based on 2-grams.
+
+Finally, if you keep your corpus saved on disk, along with the generated dictionaries and a backlog of previously generated funsies, you can use them all like so:
+
+   $ scripts/markov -c corpus.txt -l dict.json -b backlog.txt -k
+
+This will produce output based on the loaded dictionary (`-l`), and check (`-k`) that none of the results are found on the corpus (`-c`) or the backlog (`-b`). As any time that the odds are not passed as parameters, it will use those ngrams with which the dictionary was built as the ones to use, balanced equally.
+
+
+Go and have fun! My recommendation is to symlink the script from `/usr/local/bin` or put it somewhere else in your `PATH`, etc.
+
+
+What's not the CL utility
+=====
+
+The rest of the repository is a couple Python scripts that work with the same codebase as the utility and some Makefile magic (with some Perl) to interface with Twitter and tie everything together. The rest of this README will refer to the default behaviour for this wrapping framework, and **NOT** the CL.
 
 
 How it works
@@ -85,17 +148,4 @@ You can run `make tweet ACCOUNT=name_of_the_account` to both generate and automa
 
 `make clean-past` clears the log of past generated sentences (see above in *How it works* for more info on the checks performed).
 
-There's also a (Python3 too) script called `scripts/markov` that can be used by piping the corpus directly into it. It will generate the JSON dictionaries on the fly (no dump) and use them to generate a chain. It saves no state, so repeats are possible (no check against previous generations). The corpus must be a single file, with each sentence in a line, and words separated by a space. Example use:
-
-    cat myfile.txt | scripts/markov
-
-Of course if you are creative and thanks to the magic of pipes, you can do stuff like
-
-    cat *.csv | cut -f2 -d"," | scripts/markov
-
-Or symlink the script from `/usr/local/bin` or somewhere else in your `PATH`, etc.
-
-By default, it sets the maximum length at 140 like a tweet, but you can pass it a parameter to modify it:
-
-  cat *.txt | scripts/markov 256
   
