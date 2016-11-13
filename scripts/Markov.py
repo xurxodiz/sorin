@@ -7,10 +7,10 @@ import sys
 
 class Markov:
 
-  def __init__(self, corpusFile=None, corpusStdin=False, corpus=[], chainsFile=None, chains={}, separator=" ", sentenceSeparator="\n", odds=[], backlogFile=None, backlog=[]):
+  def __init__(self, corpusFile=None, corpusStdin=False, corpus=[], chainsFile=None, chains={}, delimiter=" ", sentenceDelimiter="\n", odds=[], backlogFile=None, backlog=[]):
 
-    self.__separator = separator
-    self.__sentence_separator = sentenceSeparator
+    self.__delimiter = delimiter
+    self.__sentence_delimiter = sentenceDelimiter
     self.__odds = odds
 
     if backlogFile:
@@ -29,6 +29,18 @@ class Markov:
       self.load_chains(chainsFile)
     else:
       self.__chains = chains
+
+    # only useful odds are those in chain keys
+    if self.__odds and self.__chains.keys():
+      self.__odds = [o for o in self.__odds if o in list(self.__chains.keys())]
+
+    # if that resulted in no odds, we take the chain keys directly
+    if not self.__odds and self.__chains.keys():
+      self.__odds = list(self.__chains.keys())
+
+    # if both are absent, default
+    if not self.__odds:
+      self.__odds = [1]
 
     if not self.__chains:
       if self.__corpus:
@@ -49,11 +61,11 @@ class Markov:
 
   def __load_file(self, filepath):
     with open(filepath, 'r', encoding='utf-8') if filepath else sys.stdin as f:
-      txt = f.read().split(self.__sentence_separator)
-      if not self.__separator:
+      txt = f.read().split(self.__sentence_delimiter)
+      if not self.__delimiter:
         return [list(l) for l in txt] # split every character
       else:
-        return [l.split(self.__separator) for l in txt]
+        return [l.split(self.__delimiter) for l in txt]
 
 
   def load_chains(self, filepath):
@@ -103,7 +115,7 @@ class Markov:
 
 
   def linearize(self, sentence):
-    return self.__separator.join(sentence)
+    return self.__delimiter.join(sentence)
 
 
   # check if a string is a verbatim part of an exiting tweet
@@ -150,10 +162,7 @@ class Markov:
     while True:
 
       try:
-        if self.__odds:
-          ngram = random.choice(self.__odds)
-        else:
-          ngram = random.choice(list(self.__chains.keys()))
+        ngram = random.choice(self.__odds)
         choices = self.__chains[ngram]
 
         # go through chain tree according to previous words
@@ -192,4 +201,5 @@ class Markov:
       # leave when it's not a repeat
       if not self.__is_sublist(blacklist, output):
         break
+      print(":(", output)
     return output
