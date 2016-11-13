@@ -1,21 +1,38 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import io
 import sys
+import argparse
 from Markov import Markov
 
-corpus = []
 
-with io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8') as fi:
-	corpus = [l.split() for l in fi if l.strip()]
+parser = argparse.ArgumentParser(description="Generator of Markov chains")
+parser.add_argument("maxlen", help="maximum length of the output string", nargs="?", type=int)
+parser.add_argument("-d", "--delimiter", help="token delimiter", default=" ", metavar="DEL")
+parser.add_argument("-x", "--sentence-delimiter", help="sentence delimiter", default="\n", metavar="DEL")
+parser.add_argument("-o", "--odds", nargs="+", help="list of ngrams, as frequently as they should be used", type=int, default=[1], metavar="NGRAM")
+parser.add_argument("-c", "--corpus", help="load corpus from a textfile", metavar="PATH")
+parser.add_argument("-l", "--load-chains", help="load chains from a textfile", metavar="PATH")
+parser.add_argument("-s", "--save-chains", help="save chains to a textfile", metavar="PATH")
+parser.add_argument("-b", "--backlog", help="load backlog from a textfile", metavar="PATH")
+parser.add_argument("-n", "--number", help="how many sentences to produce", type=int, default=1, metavar="N")
+parser.add_argument("-k", "--check", help="check against corpus and backlog for repetitions", action="store_true")
+args = parser.parse_args()
 
-try:
-	maxlen = int(sys.argv[1])
-except (ValueError, IndexError):
-	maxlen = 140
+stdin = (not args.corpus)
 
-m = Markov(corpus=corpus, odds=[1])
-g = m.linearize(m.generate(maxlen))
+m = Markov(corpusStdin=stdin, odds=args.odds, delimiter=args.delimiter, sentenceDelimiter=args.sentence_delimiter, corpusFile=args.corpus, chainsFile=args.load_chains, backlogFile=args.backlog)
 
-print(g)
+if args.save_chains:
+	m.save_chains(args.save_chains)
+
+output = []
+
+for i in range(args.number):
+	if args.check:
+		x = m.generate_with_checks(args.maxlen)
+	else:
+		x = m.generate(args.maxlen)
+	output.append(m.linearize(x))
+
+print(args.sentence_delimiter.join(output))
