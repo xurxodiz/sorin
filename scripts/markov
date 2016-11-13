@@ -29,10 +29,7 @@ if args.save_chains:
 output = []
 
 for i in range(args.number):
-	if args.check:
-		x = m.generate_with_checks(args.maxlen)
-	else:
-		x = m.generate(args.maxlen)
+	x = m.generate(args.maxlen, args.check)
 	output.append(m.linearize(x))
 
 print(args.sentence_delimiter.join(output))
