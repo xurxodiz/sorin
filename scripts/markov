@@ -7,7 +7,7 @@ from Markov import Markov
 
 
 parser = argparse.ArgumentParser(description="Generator of Markov chains")
-parser.add_argument("maxlen", help="maximum length of the output string", nargs="?", type=int)
+parser.add_argument("-m", "--maxlen", help="maximum length of the output string", default=1, type=int, metavar="N")
 parser.add_argument("-d", "--delimiter", help="token delimiter", default=" ", metavar="DEL")
 parser.add_argument("-x", "--sentence-delimiter", help="sentence delimiter", default="\n", metavar="DEL")
 parser.add_argument("-o", "--odds", nargs="+", help="list of ngrams, as frequently as they should be used", type=int, default=[1], metavar="NGRAM")
