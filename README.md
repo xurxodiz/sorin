@@ -16,14 +16,14 @@ Best way to check all parameters is to `scripts/markov -h`, but here are some ex
 
 Let's say we have a list of numbers and we want to generate a chain based on them:
 
-    $ echo -n "87964|467709|386|50876|4489076" | scripts/markov -x "|" -d ""
+    $ echo -n "87964_467709_386_50876_4489076" | scripts/markov -x "_" -d ""
     509
 
 (note the `-n` in the `echo` to avoid that pesky trailing newline)
 
 We use `-x` for the sentence delimiter and `-d` for the token delimiter. Now, the result is a bit short, so we can set a minimum and maximum length as well with `-m` and `-M`:
 
-    $ echo -n "87964|467709|386|50876|4489076" | scripts/markov -d "" -x "|" -m 7 -M 9
+    $ echo -n "87964_467709_386_50876_4489076" | scripts/markov -d "" -x "_" -m 7 -M 9
     48909676
 
 This way we get a number with between 7 and 9 digits (both included).
@@ -32,7 +32,7 @@ If you get your hands on a big list of words, you can have fun creating words as
 
     $ cat dict.txt | scripts/markov -s dict.json -d "" -o 2 3 -n 0
 
-We use `-s` to name the output file and `-o` to ask for 2 and 3-grams. Again, the delimiter is going to be empty, since each character will be its own token. Finally, since we don't want it to generate anything at this moment (zero output), we set `-n` to 0.
+We use `-s` to name the output file and `-o` to ask for 2 and 3-grams. Again, the token delimiter (`-d`) is going to be empty, since each character will be its own token. Finally, since we don't want it to generate anything at this moment (zero output), we set `-n` to 0.
 
 Now we can use this dict to generate our words!
 
@@ -43,7 +43,7 @@ Now we can use this dict to generate our words!
 
 The dictionary is loaded with `-l` and the number of productions wanted with `-n` as before. Note we need to set the token delimiter again with `-d`, because it's used to *glue* together the tokens in the output.
 
-But, what's this? **enviar** is already a word! That's not fun. To check that the output is always new, pass the `-k` flag:
+But, what's this? **enviar** is already a word! That's not fun. To check that the output is always new (not in the source corpus), pass the `-k` flag:
 
     $ cat dict.txt | scripts/markov -l dict.json -d "" -k
     conalsaprota
@@ -59,7 +59,7 @@ With this above command, for each letter it chooses it will do so 66% of the tim
 
 Finally, if you keep your corpus saved on disk, along with the generated dictionaries and a backlog of previously generated funsies, you can use them all like so:
 
-   $ scripts/markov -c corpus.txt -l dict.json -b backlog.txt -k
+    $ scripts/markov -c corpus.txt -l dict.json -b backlog.txt -k
 
 This will produce output based on the loaded dictionary (`-l`), and check (`-k`) that none of the results are found on the corpus (`-c`) or the backlog (`-b`). As any time that the odds are not passed as parameters, it will use those ngrams with which the dictionary was built as the ones to use, balanced equally.
 
