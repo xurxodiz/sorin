@@ -156,7 +156,7 @@ class Markov:
 
 
   # generate a tweet based on the n-gram chains
-  def generate(self, maxlen):
+  def generate(self, maxlen=None):
 
     sentence = []
     while True:
@@ -188,18 +188,17 @@ class Markov:
       else:
         sentence.append(word)
         # it's too long, let's go back
-        if len(self.linearize(sentence)) >= maxlen:
+        if maxlen and len(self.linearize(sentence)) >= maxlen:
           sentence = self.__backjump(sentence)
 
     return sentence
 
 
-  def generate_with_checks(self, maxlen):
+  def generate_with_checks(self, maxlen=None):
     blacklist = self.__corpus + self.__backlog
     while True:
       output = self.generate(maxlen)
       # leave when it's not a repeat
       if not self.__is_sublist(blacklist, output):
         break
-      print(":(", output)
     return output
