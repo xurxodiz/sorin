@@ -192,7 +192,7 @@ class Markov:
       else:
         sentence.append(word)
         # it's too long, let's go back
-        if maxlen and len(self.linearize(sentence)) >= maxlen:
+        if maxlen and len(self.linearize(sentence)) > maxlen:
           sentence = self.__backjump(sentence)
 
     return sentence
