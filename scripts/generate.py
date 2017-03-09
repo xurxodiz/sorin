@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
   m = Markov(corpusFile=corpuspath, chainsFile=chainpath, backlogFile=backlogpath, odds=[1, 2, 2, 3])
   m.save_chains(chainpath)
-  output = m.generate_with_checks(140)
+  output = m.generate(maxlen=140,check=True)
 
   # we leave ! and ? since they make sense isolated
   output = [w.translate(str.maketrans('', '', '"()[]{}«»¡¿')) for w in output]
