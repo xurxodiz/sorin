@@ -3,6 +3,7 @@
 
 import sys
 import xml.sax.saxutils
+from pathlib import Path
 
 from Markov import Markov
 
@@ -12,6 +13,9 @@ if __name__ == "__main__":
   chainpath = "archive/"+sys.argv[1]+"/json"
   corpuspath = "archive/"+sys.argv[1]+"/log"
   backlogpath = "archive/"+sys.argv[1]+"/past"
+
+  # ensure past log
+  Path(backlogpath).touch()
 
   m = Markov(corpusFile=corpuspath, chainsFile=chainpath, backlogFile=backlogpath, odds=[1, 2, 2, 3])
   m.save_chains(chainpath)
