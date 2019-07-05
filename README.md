@@ -34,9 +34,13 @@ If you get your hands on a big list of words, you can have fun creating words as
 
 We use `-s` to name the output file and `-o` to ask for 2 and 3-grams. Again, the token delimiter (`-d`) is going to be empty, since each character will be its own token. Finally, since we don't want it to generate anything at this moment (zero output), we set `-n` to 0.
 
-Now we can use this dict to generate our words!
+In these cases, more often than not, it's more convenient to load the corpus from a file with `-c`:
 
-    $ cat dict.txt | scripts/markov -l dict.json -d "" -n 3
+    $ scripts/markov -c dict.txt -s dict.json -d "" -o 2 3 -n 0
+
+In any case, now we can use this dict to generate our words!
+
+    $ scripts/markov -l dict.json -d "" -n 3
     enviar
     guridupiése
     ransador
@@ -46,6 +50,11 @@ The dictionary is loaded with `-l` and the number of productions wanted with `-n
 But, what's this? **enviar** is already a word! That's not fun. To check that the output is always new (not in the source corpus), pass the `-k` flag:
 
     $ cat dict.txt | scripts/markov -l dict.json -d "" -k
+    conalsaprota
+
+Or, with the `-c` flag for corpus:
+
+    $ scripts/markov -c dict.txt -l dict.json -d "" -k
     conalsaprota
 
 Much better :)
