@@ -18,17 +18,21 @@ class Markov:
     else:
       self.__backlog = backlog
 
-    if corpusStdin:
-      self.load_corpus("") # will read from stdin
-    elif corpusFile:
-      self.load_corpus(corpusFile)
-    else:
-      self.__corpus = corpus
-
     if chainsFile:
       self.load_chains(chainsFile)
     else:
       self.__chains = chains
+
+    if corpusFile:
+      self.load_corpus(corpusFile)
+    else:
+      self.__corpus = corpus
+
+    if not self.__chains and not self.__corpus:
+      # we require either chain or corpus
+      # will read from stdin
+      self.load_corpus("")
+      self.make_chains(list(set(self.__odds)))
 
     # only useful odds are those in chain keys
     if self.__odds and self.__chains.keys():
@@ -41,12 +45,6 @@ class Markov:
     # if both are absent, default
     if not self.__odds:
       self.__odds = [1]
-
-    if not self.__chains:
-      if self.__corpus:
-        self.make_chains(list(set(self.__odds)))
-      else:
-        raise ArgumentError("Either corpus or chains need to be provided")
 
 
   def load_corpus(self, filepath):

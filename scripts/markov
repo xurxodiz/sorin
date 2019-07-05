@@ -19,9 +19,7 @@ parser.add_argument("-n", "--number", help="how many sentences to produce", type
 parser.add_argument("-k", "--check", help="check against corpus and backlog for repetitions", action="store_true")
 args = parser.parse_args()
 
-stdin = (not args.corpus)
-
-m = Markov(corpusStdin=stdin, odds=args.odds, delimiter=args.delimiter, sentenceDelimiter=args.sentence_delimiter, corpusFile=args.corpus, chainsFile=args.load_chains, backlogFile=args.backlog)
+m = Markov(odds=args.odds, delimiter=args.delimiter, sentenceDelimiter=args.sentence_delimiter, corpusFile=args.corpus, chainsFile=args.load_chains, backlogFile=args.backlog)
 
 if args.save_chains:
 	m.save_chains(args.save_chains)
